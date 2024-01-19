@@ -12,7 +12,7 @@ const options = {
         description: "API documentation for your application.",
       },
     },
-    apis: ["./src/routes/*.js", "./src/routes/**/*.js"],
+    apis: ["./src/routes/*.js"],
   };
   
 
@@ -20,7 +20,7 @@ const swaggerSpec = swaggerJSDoc(options);
 
 const configureSwagger = (app, port) => {
     app.use(
-        "/api/docs/",
+        "/api/docs",
         swaggerUi.serve,
         swaggerUi.setup(swaggerSpec, {
           swaggerOptions: {
