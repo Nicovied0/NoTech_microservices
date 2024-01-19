@@ -123,33 +123,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-/**
- * @swagger
- * api/auth/profile:
- *   get:
- *     tags:
- *       - Auth
- *     summary: Get user profile
- *     description: Retrieve the user profile using a valid token.
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       '200':
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 profile:
- *                   $ref: '#/components/schemas/User'
- *       '401':
- *         description: Token not provided or invalid
- *       '404':
- *         description: User not found
- *       '500':
- *         description: Internal server error
- */
+
 router.get("/profile", async (req, res) => {
   try {
     const token = req.headers.token;
@@ -190,50 +164,7 @@ router.get("/profile", async (req, res) => {
   }
 });
 
-/**
- * @swagger
- * api/auth/profile/edit:
- *   put:
- *     tags:
- *       - Auth
- *     summary: Update user profile
- *     description: Update the user profile using a valid token.
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               image:
- *                 type: string
- *               number:
- *                 type: string
- *               description:
- *                 type: string
- *     responses:
- *       '200':
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 profile:
- *                   $ref: '#/components/schemas/User'
- *       '401':
- *         description: Token not provided or invalid
- *       '404':
- *         description: User not found
- *       '500':
- *         description: Internal server error
- */
+
 router.put("/profile/edit", async (req, res) => {
   try {
     const token = req.headers.token;
