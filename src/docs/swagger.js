@@ -19,15 +19,15 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 const configureSwagger = (app, port) => {
-  app.use(
-    "/api/docs/",
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerSpec, {
-      swaggerOptions: {
-        url: "/api/docs.json",
-      },
-    })
-  );
+    app.use(
+        "/api/docs/",
+        swaggerUi.serve,
+        swaggerUi.setup(swaggerSpec, {
+          swaggerOptions: {
+            url: "/api/docs.json",
+          },
+        })
+      );
   app.get("/api/docs.json", (req, res) => {
     res.setHeader("Content-Type", "application/json");
     res.send(swaggerSpec);
