@@ -5,8 +5,6 @@ const dbConnect = async () => {
   try {
     const DB_URI = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASS}@cluster0.1e4qqls.mongodb.net/${process.env.NAME_DB}?retryWrites=true&w=majority`;
  
-    console.log("DB_URI:", DB_URI);
-
     await mongoose.connect(DB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,

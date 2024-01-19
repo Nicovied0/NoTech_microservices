@@ -3,8 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const dbConnect = require("./src/config/mongo");
 const routes = require("./src/routes/index.routes");
-const { configureSwagger } = require('./src/docs/swagger');
-const swaggerUi = require("swagger-ui-express")
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -16,13 +15,10 @@ app.use(cors());
 // Routes
 app.use("/api/", routes);
 
-// Swagger Docs
-configureSwagger(app, PORT);  
 
-// Global Error Handler
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Internal Server Error" });
+app.use((req, res, next) => {
+    console.log(req.url);
+    next();
 });
 
 // Start Server
