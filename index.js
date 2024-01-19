@@ -1,26 +1,39 @@
+// your main application file (e.g., app.js)
+
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const dbConnect = require("./src/config/mongo");
 const routes = require("./src/routes/index.routes");
-const {swaggerDocs} = require('./src/docs/swagger')
+const { configureSwagger } = require('./src/docs/swagger')
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Middleware
 app.use(express.json());
 app.use(cors());
 
+// Routes
 app.use("/api/", routes);
 
+// Swagger Docs
+configureSwagger(app, PORT);
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Internal Server Error" });
+});
+
+// Start Server
 async function startServer() {
   try {
     await dbConnect();
     app.listen(PORT, () => {
       console.log("Successfully connected to MongoDB");
       console.log(`Server is running on http://localhost:${PORT}`);
-      swaggerDocs(app,PORT)
     });
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);

@@ -2,10 +2,28 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 
+/**
+ * @swagger
+ * /api/user:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: Get all users
+ *     description: Retrieve a list of all users.
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ */
 router.get("/", async (req, res) => {
   try {
     const users = await User.find();
-    console.log("Route /USERS was called");
+    console.log("Route /user was called");
     res.json(users);
   } catch (error) {
     console.error("Error fetching users", error);
@@ -13,6 +31,39 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/user/{id}:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: Get user by ID
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *       '404':
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: User not found
+ *               message: The user with the specified ID was not found.
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Error fetching user
+ *               message: An error occurred while fetching the user.
+ */
 router.get("/:id", async (req, res) => {
   try {
     const userId = req.params.id;
@@ -30,6 +81,84 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/user/{id}:
+ *   put:
+ *     tags:
+ *       - User
+ *     summary: Update user by ID
+ *     description: Update an existing user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       description: Updated user object
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       '404':
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: User not found
+ *               message: The user with the specified ID was not found.
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Error updating user
+ *               message: An error occurred while updating the user.
+ *
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: '65aa899da62e0e5813581dfd'
+ *         name:
+ *           type: string
+ *           example: 'user admin'
+ *         image:
+ *           type: string
+ *           example: 'https://img.icons8.com/ios-glyphs/90/user--v1.png'
+ *         email:
+ *           type: string
+ *           example: 'user@gmail.com'
+ *         password:
+ *           type: string
+ *           example: '$2b$10$IlVhfg68DQpLKxPb6mmvUeQucHCJyJHQZAkmva4x0r/VVZZvDdX2S'
+ *         role:
+ *           type: string
+ *           example: 'public'
+ *         actived:
+ *           type: boolean
+ *           example: true
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: '2024-01-19T14:39:25.264Z'
+ *         __v:
+ *           type: integer
+ *           example: 0
+ */
 router.put("/:id", async (req, res) => {
   try {
     const userId = req.params.id;
@@ -51,39 +180,43 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
-  const { name, image, email, phone, password, role, actived, description } =
-    req.body;
-
-  try {
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ error: "A user with that email already exists" });
-    }
-
-    const newUser = new User({
-      name,
-      image,
-      email,
-      phone,
-      password,
-      role,
-      actived,
-      description,
-    });
-
-    const savedUser = await newUser.save();
-
-    res.status(201).json(savedUser);
-  } catch (error) {
-    console.error("Error adding a user:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
+/**
+ * @swagger
+ * /api/user/{id}/delete:
+ *   put:
+ *     tags:
+ *       - User
+ *     summary: Delete user by ID
+ *     description: Delete an existing user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       '404':
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: User not found
+ *               message: The user with the specified ID was not found.
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Error updating user
+ *               message: An error occurred while updating the user.
+ */
 router.put("/:id/delete", async (req, res) => {
   try {
     const userId = req.params.id;
@@ -107,5 +240,42 @@ router.put("/:id/delete", async (req, res) => {
     res.status(500).json({ error: "Error updating user" });
   }
 });
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: '65aa899da62e0e5813581dfd'
+ *         name:
+ *           type: string
+ *           example: 'user admin'
+ *         image:
+ *           type: string
+ *           example: 'https://img.icons8.com/ios-glyphs/90/user--v1.png'
+ *         email:
+ *           type: string
+ *           example: 'user@gmail.com'
+ *         password:
+ *           type: string
+ *           example: '$2b$10$IlVhfg68DQpLKxPb6mmvUeQucHCJyJHQZAkmva4x0r/VVZZvDdX2S'
+ *         role:
+ *           type: string
+ *           example: 'public'
+ *         actived:
+ *           type: boolean
+ *           example: true
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: '2024-01-19T14:39:25.264Z'
+ *         __v:
+ *           type: integer
+ *           example: 0
+ */
 
 module.exports = router;
