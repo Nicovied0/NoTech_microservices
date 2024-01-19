@@ -8,6 +8,7 @@ const swaggerUi = require("swagger-ui-express")
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
+const BACK_URL = process.env.BACK_URL || "http://localhost:";
 
 // Middleware
 app.use(express.json());
@@ -17,7 +18,7 @@ app.use(cors());
 app.use("/api/", routes);
 
 // Swagger Docs
-configureSwagger(app, PORT);  
+configureSwagger(app, BACK_URL);  
 
 // Global Error Handler
 app.use((err, req, res, next) => {
