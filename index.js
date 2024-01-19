@@ -1,11 +1,10 @@
-// your main application file (e.g., app.js)
-
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const dbConnect = require("./src/config/mongo");
 const routes = require("./src/routes/index.routes");
-const { configureSwagger } = require('./src/docs/swagger')
+const { configureSwagger } = require('./src/docs/swagger');
+const swaggerUi = require("swagger-ui-express");  // Import swagger-ui-express
 
 dotenv.config();
 const app = express();
@@ -19,7 +18,7 @@ app.use(cors());
 app.use("/api/", routes);
 
 // Swagger Docs
-configureSwagger(app, PORT);
+configureSwagger(app, PORT);  
 
 // Global Error Handler
 app.use((err, req, res, next) => {
