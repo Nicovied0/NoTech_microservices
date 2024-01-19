@@ -19,6 +19,12 @@ const options = {
       version: "1.0.0",
     },
   },
+  servers: [
+    {
+      url: "https://notech-microservice.vercel.app/",
+      description: "My API Documentation",
+    },
+  ],
   apis: ["src/**/*.js"],
 };
 
