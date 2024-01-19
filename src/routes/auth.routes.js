@@ -89,6 +89,7 @@ router.get("/profile", async (req, res) => {
         phone: user.phone,
         description: user.description,
         role: user.role,
+        actived:user.actived,
         id: userId,
       };
 
