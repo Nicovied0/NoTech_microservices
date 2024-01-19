@@ -14,6 +14,40 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+/**
+ * @swagger
+ * /api/user/{id}:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: Get user by ID
+ *     description: Retrieve a user by their ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *       '404':
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: User not found
+ *               message: The user with the specified ID was not found.
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Error fetching user
+ *               message: An error occurred while fetching the user.
+ */
 router.get("/:id", async (req, res) => {
   try {
     const userId = req.params.id;
