@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const dbConnect = async () => {
   try {
-    const DB_URI = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASS}@cluster0.gqx2v4p.mongodb.net/${process.env.NAME_DB}?retryWrites=true&w=majority`;
+    const DB_URI = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASS}@cluster0.1e4qqls.mongodb.net/${process.env.NAME_DB}?retryWrites=true&w=majority`;
  
     console.log("DB_URI:", DB_URI);
 
