@@ -18,22 +18,19 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 const configureSwagger = (app, port) => {
-  app.use(
-    "/api/docs",
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerSpec, {
-      swaggerOptions: {
-        url: "/api/docs.json",
-      },
-    })
-  );
+  // Serve Swagger UI assets
+  app.use("/api/docs", swaggerUi.serve);
+
+  // Serve Swagger JSON spec
   app.get("/api/docs.json", (req, res) => {
     res.setHeader("Content-Type", "application/json");
     res.send(swaggerSpec);
   });
-  console.log(
-    `Swagger documentation available at http://localhost:${port}/api/docs`
-  );
+
+  // Swagger UI setup
+  app.get("/api/docs", swaggerUi.setup(swaggerSpec, { explorer: true }));
+
+  console.log(`Swagger documentation available at http://localhost:${port}/api/docs`);
 };
 
 module.exports = { configureSwagger };
