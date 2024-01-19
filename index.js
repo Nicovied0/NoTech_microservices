@@ -4,8 +4,7 @@ const dotenv = require("dotenv");
 const dbConnect = require("./src/config/mongo");
 const routes = require("./src/routes/index.routes");
 const { configureSwagger } = require('./src/docs/swagger');
-const swaggerUi = require("swagger-ui-express");  // Import swagger-ui-express
-
+const swaggerUi = require("swagger-ui-express")
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
