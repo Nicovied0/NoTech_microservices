@@ -67,7 +67,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
 /**
  * @swagger
  * /api/auth/login:
@@ -123,7 +122,6 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 /**
  * @swagger
@@ -191,7 +189,6 @@ router.get("/profile", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 /**
  * @swagger
@@ -315,13 +312,6 @@ router.put("/profile/edit", async (req, res) => {
  *         actived:
  *           type: boolean
  *           example: true
- *         createdAt:
- *           type: string
- *           format: date-time
- *           example: '2024-01-19T14:39:25.264Z'
- *         __v:
- *           type: integer
- *           example: 0
  */
 
 module.exports = router;
