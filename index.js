@@ -1,46 +1,24 @@
 const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
 const dbConnect = require("./src/config/mongo");
-const routes = require("./src/routes/index.routes");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const userRoute = require("./src/routes/user.routes");
+const authRoute = require("./src/routes/auth.routes");
 
-dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(express.json());
-app.use(cors());
-
-// Routes
-app.use("/api/", routes);
 
 // Configurar Swagger
-
 const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Library API",
+      title: "NoTech microservice",
       version: "1.0.0",
-      description: "A simple Express Library API",
-      termsOfService: "http://example.com/terms/",
-      contact: {
-        name: "API Support",
-        url: "http://www.exmaple.com/support",
-        email: "support@example.com",
-      },
     },
-    servers: [
-      {
-        url: "https://notech-microservice.vercel.app/",
-        description: "My API Documentation",
-      },
-    ],
   },
-  // This is to call all the file
   apis: ["src/**/*.js"],
 };
 
@@ -58,6 +36,10 @@ app.use(
     customCssUrl: CSS_URL,
   })
 );
+
+app.use("/api/user",userRoute)
+app.use("/api/auth",authRoute)
+
 
 // Start Server
 async function startServer() {

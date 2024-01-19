@@ -1,11 +1,43 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const bodyParser = require('body-parser');
 const User = require("../models/User");
 
-const router = express.Router();
+const authRoute = express.Router();
 
-router.post("/register", async (req, res) => {
+authRoute.use(bodyParser.json());
+
+/**
+ * @swagger
+ * api/auth/register:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: User registration
+ *     description: Register a new user.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       '201':
+ *         description: Registration successful
+ *       '400':
+ *         description: Email is already registered
+ *       '500':
+ *         description: Internal server error
+ */
+authRoute.post("/register", async (req, res) => {
   try {
     const { name, image, email, phone, password, role, active, description } =
       req.body;
@@ -37,8 +69,38 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
-router.post("/login", async (req, res) => {
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: User login
+ *     description: Log in with existing credentials.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user@gmail.com
+ *               password:
+ *                 type: string
+ *                 example: 123123
+ *     responses:
+ *       '200':
+ *         description: Login successful
+ *       '401':
+ *         description: Incorrect email or password
+ *       '404':
+ *         description: User not found
+ *       '500':
+ *         description: Internal server error
+ */
+authRoute.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -63,7 +125,34 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/profile", async (req, res) => {
+/**
+ * @swagger
+ * api/auth/profile:
+ *   get:
+ *     tags:
+ *       - Auth
+ *     summary: Get user profile
+ *     description: Retrieve the user profile using a valid token.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 profile:
+ *                   $ref: '#/components/schemas/User'
+ *       '401':
+ *         description: Token not provided or invalid
+ *       '404':
+ *         description: User not found
+ *       '500':
+ *         description: Internal server error
+ */
+authRoute.get("/profile", async (req, res) => {
   try {
     const token = req.headers.token;
 
@@ -103,8 +192,51 @@ router.get("/profile", async (req, res) => {
   }
 });
 
-
-router.put("/profile/edit", async (req, res) => {
+/**
+ * @swagger
+ * api/auth/profile/edit:
+ *   put:
+ *     tags:
+ *       - Auth
+ *     summary: Update user profile
+ *     description: Update the user profile using a valid token.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               image:
+ *                 type: string
+ *               number:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 profile:
+ *                   $ref: '#/components/schemas/User'
+ *       '401':
+ *         description: Token not provided or invalid
+ *       '404':
+ *         description: User not found
+ *       '500':
+ *         description: Internal server error
+ */
+authRoute.put("/profile/edit", async (req, res) => {
   try {
     const token = req.headers.token;
 
@@ -156,4 +288,4 @@ router.put("/profile/edit", async (req, res) => {
 
 
 
-module.exports = router;
+module.exports = authRoute;
