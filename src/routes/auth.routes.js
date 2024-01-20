@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const User = require("../models/User");
 
 const authRoute = express.Router();
@@ -39,8 +39,18 @@ authRoute.use(bodyParser.json());
  */
 authRoute.post("/register", async (req, res) => {
   try {
-    const { name, image, email, phone, password, role, active, description } =
-      req.body;
+    const {
+      name,
+      image,
+      email,
+      phone,
+      password,
+      role,
+      active,
+      description,
+      documentType,
+      documentNumber,
+    } = req.body;
 
     const existingUser = await User.findOne({ email });
 
@@ -58,6 +68,8 @@ authRoute.post("/register", async (req, res) => {
       role,
       active,
       description,
+      documentType,
+      documentNumber,
       password: hashedPassword,
     });
 
@@ -102,18 +114,36 @@ authRoute.post("/register", async (req, res) => {
  */
 authRoute.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    let { email, documentNumber, password } = req.body;
 
-    const user = await User.findOne({ email });
+    if (!documentNumber && !email) {
+      return res
+        .status(400)
+        .json({ message: "Please provide documentNumber or email" });
+    }
+
+    let user;
+
+    if (documentNumber) {
+      user = await User.findOne({ documentNumber });
+    }
+
+    if (!user && email) {
+      user = await User.findOne({ email });
+    }
 
     if (!user) {
-      return res.status(404).json({ message: "Incorrect email or password" });
+      return res
+        .status(404)
+        .json({ message: "Incorrect documentNumber, email, or password" });
     }
 
     const passwordMatch = bcrypt.compareSync(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Incorrect email or password" });
+      return res
+        .status(401)
+        .json({ message: "Incorrect documentNumber, email, or password" });
     }
 
     const token = jwt.sign({ userId: user._id }, "secret");
@@ -179,6 +209,8 @@ authRoute.get("/profile", async (req, res) => {
         image: user.image,
         phone: user.phone,
         description: user.description,
+        documentType: user.documentType,
+        documentNumber: user.documentNumber,
         role: user.role,
         actived: user.actived,
         id: userId,
@@ -285,7 +317,5 @@ authRoute.put("/profile/edit", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
-
 
 module.exports = authRoute;

@@ -33,6 +33,13 @@ const UserSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  documentType: {
+    type: String,
+    enum: ["DNI", "passport", "driverLicense", "IDCard", "other"],
+  },
+  documentNumber: {
+    type: mongoose.Schema.Types.Mixed,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
