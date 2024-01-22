@@ -1,4 +1,4 @@
-# NOT Microservice
+# NOTech Microservice
 
 This project was generated with `NODE` and `EXPRESS`.
 
