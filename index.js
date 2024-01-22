@@ -10,7 +10,6 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 
-// Configurar Swagger
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -47,7 +46,6 @@ app.use("/api/user",userRoute)
 app.use("/api/auth",authRoute)
 
 
-// Start Server
 async function startServer() {
   try {
     await dbConnect();

@@ -33,7 +33,6 @@ userRoute.get("/", async (req, res) => {
   }
 });
 
-
 /**
  * @swagger
  * /api/user/{id}:
