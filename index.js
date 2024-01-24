@@ -4,6 +4,7 @@ const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const userRoute = require("./src/routes/user.routes");
 const authRoute = require("./src/routes/auth.routes");
+const uploadImageRoute = require("./src/routes/uploadImage.routes");
 
 
 const app = express();
@@ -44,7 +45,7 @@ app.use(
 
 app.use("/api/user",userRoute)
 app.use("/api/auth",authRoute)
-
+app.use("/api/newImage",uploadImageRoute)
 
 async function startServer() {
   try {

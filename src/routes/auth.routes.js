@@ -10,7 +10,7 @@ authRoute.use(bodyParser.json());
 
 /**
  * @swagger
- * api/auth/register:
+ * /api/auth/register:
  *   post:
  *     tags:
  *       - Auth
@@ -157,7 +157,7 @@ authRoute.post("/login", async (req, res) => {
 
 /**
  * @swagger
- * api/auth/profile:
+ * /api/auth/profile:
  *   get:
  *     tags:
  *       - Auth
@@ -226,7 +226,7 @@ authRoute.get("/profile", async (req, res) => {
 
 /**
  * @swagger
- * api/auth/profile/edit:
+ * /api/auth/profile/edit:
  *   put:
  *     tags:
  *       - Auth
