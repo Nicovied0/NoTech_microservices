@@ -1,6 +1,7 @@
 const express = require("express");
 const dbConnect = require("./src/config/mongo");
 const swaggerJsDoc = require("swagger-jsdoc");
+const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const userRoute = require("./src/routes/user.routes");
 const authRoute = require("./src/routes/auth.routes");
@@ -8,8 +9,9 @@ const uploadImageRoute = require("./src/routes/uploadImage.routes");
 
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3003;
 
+app.use(cors());
 
 const options = {
   definition: {
