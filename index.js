@@ -6,10 +6,11 @@ const swaggerUi = require("swagger-ui-express");
 const userRoute = require("./src/routes/user.routes");
 const authRoute = require("./src/routes/auth.routes");
 const uploadImageRoute = require("./src/routes/uploadImage.routes");
+const sendMailRoute = require("./src/routes/sendMail.routes");
 
 
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 
@@ -48,6 +49,8 @@ app.use(
 app.use("/api/user",userRoute)
 app.use("/api/auth",authRoute)
 app.use("/api/newImage",uploadImageRoute)
+app.use("/api/sendMail",sendMailRoute)
+
 
 async function startServer() {
   try {
