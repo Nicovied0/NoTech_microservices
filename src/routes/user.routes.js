@@ -1,9 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const User = require("../models/User");
-const userRoute = express.Router();
+const router = express.Router();
 
-userRoute.use(bodyParser.json());
+router.use(bodyParser.json());
 /**
  * @swagger
  * /api/user:
@@ -22,7 +22,7 @@ userRoute.use(bodyParser.json());
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-userRoute.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const users = await User.find();
     console.log("Route /user was called");
@@ -66,7 +66,7 @@ userRoute.get("/", async (req, res) => {
  *               error: Error fetching user
  *               message: An error occurred while fetching the user.
  */
-userRoute.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findById(userId);
@@ -161,7 +161,7 @@ userRoute.get("/:id", async (req, res) => {
  *           type: integer
  *           example: 0
  */
-userRoute.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const userId = req.params.id;
     const updatedUserData = req.body;
@@ -219,7 +219,7 @@ userRoute.put("/:id", async (req, res) => {
  *               error: Error updating user
  *               message: An error occurred while updating the user.
  */
-userRoute.put("/:id/delete", async (req, res) => {
+router.put("/:id/delete", async (req, res) => {
   try {
     const userId = req.params.id;
 
@@ -243,4 +243,4 @@ userRoute.put("/:id/delete", async (req, res) => {
   }
 });
 
-module.exports = userRoute;
+module.exports = router;

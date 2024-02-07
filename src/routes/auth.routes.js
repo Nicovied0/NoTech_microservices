@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const User = require("../models/User");
 
-const authRoute = express.Router();
+const router = express.Router();
 
-authRoute.use(bodyParser.json());
+router.use(bodyParser.json());
 
 /**
  * @swagger
@@ -37,7 +37,7 @@ authRoute.use(bodyParser.json());
  *       '500':
  *         description: Internal server error
  */
-authRoute.post("/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const {
       name,
@@ -112,7 +112,7 @@ authRoute.post("/register", async (req, res) => {
  *       '500':
  *         description: Internal server error
  */
-authRoute.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     let { email, documentNumber, password } = req.body;
 
@@ -182,7 +182,7 @@ authRoute.post("/login", async (req, res) => {
  *       '500':
  *         description: Internal server error
  */
-authRoute.get("/profile", async (req, res) => {
+router.get("/profile", async (req, res) => {
   try {
     const token = req.headers.token;
 
@@ -268,7 +268,7 @@ authRoute.get("/profile", async (req, res) => {
  *       '500':
  *         description: Internal server error
  */
-authRoute.put("/profile/edit", async (req, res) => {
+router.put("/profile/edit", async (req, res) => {
   try {
     const token = req.headers.token;
 
@@ -318,4 +318,4 @@ authRoute.put("/profile/edit", async (req, res) => {
   }
 });
 
-module.exports = authRoute;
+module.exports = router;
